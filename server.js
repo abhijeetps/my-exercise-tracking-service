@@ -78,6 +78,11 @@ app.post('/api/exercise/add', (req, res) => {
   
 })
 
+app.get('/api/exercise/log', (req, res) => {
+  
+})
+
+
 const listener = app.listen(process.env.PORT || 3000, () => {
   console.log('Your app is listening on port ' + listener.address().port)
 })
