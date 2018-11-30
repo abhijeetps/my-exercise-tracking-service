@@ -51,7 +51,7 @@ app.use((err, req, res, next) => {
 })
 
 app.post('/api/exercise/new-user', (req, res) => {
-  let username = req.body.username
+  let username = req.body.username | 'unnamed_user'
   User.create({username: username}, (err, data) => {
     if(err){
       console.log(err)
