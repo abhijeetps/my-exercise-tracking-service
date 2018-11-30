@@ -51,14 +51,14 @@ app.use((err, req, res, next) => {
 })
 
 app.post('/api/exercise/new-user', (req, res) => {
-  console.log(req.body)
-  let username = req.body
-  User.create({"username": username}, (err, data) => {
+  let username = req.body.username
+  User.create({username: username}, (err, data) => {
     if(err){
       console.log(err)
     }
     else {
-      console.log({"username": username})
+      console.log(`${data.username} created successfully.`)
+      res.json({"username": data.username, "_id": data._id})
     }
   })
 })
