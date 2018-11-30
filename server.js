@@ -66,7 +66,7 @@ app.post('/api/exercise/new-user', (req, res) => {
 app.get('/api/exercise/users', (req, res) => {
   User.find({}, (err, data) => {
     if (err) {
-    console.log(err)
+      console.log(err)
     }
     else {
       res.json(data)
