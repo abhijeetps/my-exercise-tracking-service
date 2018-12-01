@@ -65,7 +65,20 @@ app.get('/api/exercise/users', (req, res) => {
 })
 
 app.post('/api/exercise/add', (req, res) => {
-  
+  let userId = req.body.userId
+  User.find({_id: userId}, (err, data) => {
+    if (err) {
+      console.log(err)
+    }
+    else {
+      if(data == null) {
+        res.json({"error": "user doesn't exists"})
+      }
+      else {
+        
+      }
+    }
+  })
 })
 
 app.get('/api/exercise/log', (req, res) => {
