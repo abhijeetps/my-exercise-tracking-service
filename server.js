@@ -23,7 +23,7 @@ const User = mongoose.model('User', userSchema)
 const exerciseSchema = new mongoose.Schema({
   userId: String,
   description: String,
-  minutes: Number,
+  duration: Number,
   date: Date
 })
 const Exercise = mongoose.model('Exercise', exerciseSchema)
@@ -73,6 +73,7 @@ app.get('/api/exercise/users', (req, res) => {
 
 app.post('/api/exercise/add', (req, res) => {
   let userId = req.body.userId
+  console.log(req.body)
   User.find({_id: userId}, (err, data) => {
     if (err) {
       console.log(err)
@@ -85,8 +86,8 @@ app.post('/api/exercise/add', (req, res) => {
         Exercise.create({
           userId: userId,
           description: req.body.description,
-          minutes: req.body.minutes,
-          date: req.body.date
+          duration: req.body.duration | 0,
+          date: req.body.date | Date.now()
         }, (err, data) => {
           if(err) {
             console.log(err)
