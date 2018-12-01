@@ -92,7 +92,7 @@ app.post('/api/exercise/add', (req, res) => {
             console.log(err)
           }
           else {
-            console.log(data)
+            res.json(data)
           }
         })
       }
