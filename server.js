@@ -18,8 +18,15 @@ app.use(express.static('public'))
 const userSchema = new mongoose.Schema({
   username: String
 })
-
 const User = mongoose.model('User', userSchema)
+
+const exerciseSchema = new mongoose.Schema({
+  userId: String,
+  description: String,
+  minutes: Number,
+  date: Date
+})
+const Exercise = mongoose.model('Exercise', exerciseSchema)
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html')
@@ -75,7 +82,19 @@ app.post('/api/exercise/add', (req, res) => {
         res.json({"error": "user doesn't exists"})
       }
       else {
-        
+        Exercise.create({
+          userId: userId,
+          description: req.body.description,
+          minutes: req.body.minutes,
+          date: req.body.date
+        }, (err, data) => {
+          if(err) {
+            console.log(err)
+          }
+          else {
+            console.log(data)
+          }
+        })
       }
     }
   })
