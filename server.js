@@ -124,17 +124,17 @@ app.get('/api/exercise/log/:userId/:from?/:to?/:limit?', (req, res) => {
     res.json({"Error" : "UserId not defined."})
   }
   if(!from) {
-    from = Date.now()
+    from = new Date(Date.now())
+    from = new Date(from.getTime() - 24*60*60*1000)
   }
   else {
-    from = Date(from)
-    setDate(from.getDate() - 1)
+    from = new Date(Date(from))
   }
   if(!to) {
-    to = Date.now()
+    to = new Date(Date.now())
   }
   else {
-    to = Date(to)
+    to = new Date(Date(to))
   }
   if(!limit) {
     limit = 1
@@ -153,7 +153,7 @@ app.get('/api/exercise/log/:userId/:from?/:to?/:limit?', (req, res) => {
       query.date = {$gte: from, $lt: to}
       query.limit = limit
       console.log(query)
-      Exercise.find(query).select('userId description date duration').limit(limit).exec((errExercise, exercises) => {
+      Exercise.find(query).select('userId description date duration').limit(limit).exec((err, exercises) => {
           if (err) {
             res.json({"Error": 'Error fetching exercises.'})
           } else if (!user) {
@@ -161,8 +161,8 @@ app.get('/api/exercise/log/:userId/:from?/:to?/:limit?', (req, res) => {
           } else {
             res.json(exercises)
           }
-        });
-    }
+        })
+      }
   })
 })
 
