@@ -116,7 +116,6 @@ app.post('/api/exercise/add', (req, res) => {
 })
 
 app.get('/api/exercise/log/:userId/:from?/:to?/:limit?', (req, res) => {
-  console.log(req.params)
   let userId = req.params.userId
   let from = req.params.from
   let to = req.params.to
@@ -129,6 +128,7 @@ app.get('/api/exercise/log/:userId/:from?/:to?/:limit?', (req, res) => {
   }
   else {
     from = Date(from)
+    setDate(from.getDate() - 1)
   }
   if(!to) {
     to = Date.now()
@@ -139,7 +139,7 @@ app.get('/api/exercise/log/:userId/:from?/:to?/:limit?', (req, res) => {
   if(!limit) {
     limit = 1
   }
-  User.findOne({username: userId}, (err, user) => {
+  User.findById(userId, (err, user) => {
     if(err) {
       console.log('Error fetching data')
     }
@@ -151,6 +151,17 @@ app.get('/api/exercise/log/:userId/:from?/:to?/:limit?', (req, res) => {
       let query = {}
       query.userId = userId
       query.date = {$gte: from, $lt: to}
+      query.limit = limit
+      console.log(query)
+      Exercise.find(query).select('userId description date duration').limit(limit).exec((errExercise, exercises) => {
+          if (err) {
+            res.json({"Error": 'Error fetching exercises.'})
+          } else if (!user) {
+            res.send({"Error": 'User data notfound.'})
+          } else {
+            res.json(exercises)
+          }
+        });
     }
   })
 })
