@@ -153,15 +153,10 @@ app.get('/api/exercise/log/:userId/:from?/:to?/:limit?', (req, res) => {
       query.date = {$gte: from, $lt: to}
       query.limit = limit
       console.log(query)
-      Exercise.find(query).select('userId description date duration').limit(limit).exec((err, exercises) => {
-          if (err) {
-            res.json({"Error": 'Error fetching exercises.'})
-          } else if (!user) {
-            res.send({"Error": 'User data notfound.'})
-          } else {
-            res.json(exercises)
-          }
-        })
+      Exercise.find({userId: userId})
+      .where('date').gte(from).lte(to)
+      .limit(+limit).exec()
+      .then(data => res.json(data))
       }
   })
 })
