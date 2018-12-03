@@ -127,11 +127,17 @@ app.get('/api/exercise/log/:userId/:from?/:to?/:limit?', (req, res) => {
   if(!from) {
     from = Date.now()
   }
+  else {
+    from = Date(from)
+  }
   if(!to) {
     to = Date.now()
   }
+  else {
+    to = Date(to)
+  }
   if(!limit) {
-    limit = 0
+    limit = 1
   }
   User.findOne({username: userId}, (err, user) => {
     if(err) {
@@ -141,7 +147,10 @@ app.get('/api/exercise/log/:userId/:from?/:to?/:limit?', (req, res) => {
       res.json({"user": "UserId not found."})
     }
     else {
-      
+      console.log('UserId found.')
+      let query = {}
+      query.userId = userId
+      query.date = {$gte: from, $lt: to}
     }
   })
 })
