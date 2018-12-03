@@ -78,7 +78,7 @@ app.post('/api/exercise/add', (req, res) => {
   let userId = req.body.userId
   User.find({_id: userId}, (err, data) => {
     if (err) {
-      console.log(err)
+      res.json({"error": "User does not exist."})
     }
     else {
       if(data == null) {
