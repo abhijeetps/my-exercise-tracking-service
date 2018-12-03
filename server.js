@@ -49,7 +49,7 @@ app.use((err, req, res, next) => {
 
 app.post('/api/exercise/new-user', (req, res) => {
   let username = req.body.username
-  if(username == '') {
+  if(!username) {
     username = 'unnamed_user'
   }
   User.create({username: username}, (err, data) => {
@@ -88,20 +88,20 @@ app.post('/api/exercise/add', (req, res) => {
         let description = req.body.description
         let duration = req.body.duration
         let date = req.body.date
-        if(description == '') {
+        if(!description) {
           description = 'It has some description'
         }
-        if(duration == 0) {
+        if(!duration) {
           duration = 60
         }
-        if(date == null) {
-        
+        if(!date) {
+          date = Date.now()
         }
         Exercise.create({
           userId: userId,
-          description: req.body.description,
-          duration: req.body.duration,
-          date: req.body.date
+          description: description,
+          duration: duration,
+          date: date
         }, (err, data) => {
           if(err) {
             console.log(err)
