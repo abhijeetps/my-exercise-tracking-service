@@ -117,7 +117,11 @@ app.post('/api/exercise/add', (req, res) => {
 
 app.get('/api/exercise/log/:userId/:from?/:to?/:limit?', (req, res) => {
   console.log(req.params)
-  
+  let userId = req.params.userId
+  let from = req.params.from
+  let to = req.params.to
+  let limit = req.params.limit
+  User.findOne()
 })
 
 
