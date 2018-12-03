@@ -121,7 +121,29 @@ app.get('/api/exercise/log/:userId/:from?/:to?/:limit?', (req, res) => {
   let from = req.params.from
   let to = req.params.to
   let limit = req.params.limit
-  User.findOne()
+  if(!userId) {
+    res.json({"Error" : "UserId not defined."})
+  }
+  if(!from) {
+    from = Date.now()
+  }
+  if(!to) {
+    to = Date.now()
+  }
+  if(!limit) {
+    limit = 0
+  }
+  User.findOne({username: userId}, (err, user) => {
+    if(err) {
+      console.log('Error fetching data')
+    }
+    else if (!user) {
+      res.json({"user": "UserId not found."})
+    }
+    else {
+      
+    }
+  })
 })
 
 
