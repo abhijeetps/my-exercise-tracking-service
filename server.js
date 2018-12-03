@@ -48,7 +48,10 @@ app.use((err, req, res, next) => {
 })
 
 app.post('/api/exercise/new-user', (req, res) => {
-  let username = req.body.username | 'unnamed_user'
+  let username = req.body.username
+  if(username == '') {
+    username = 'unnamed_user'
+  }
   User.create({username: username}, (err, data) => {
     if(err){
       console.log(err)
@@ -73,21 +76,32 @@ app.get('/api/exercise/users', (req, res) => {
 
 app.post('/api/exercise/add', (req, res) => {
   let userId = req.body.userId
-  console.log(req.body)
   User.find({_id: userId}, (err, data) => {
     if (err) {
       console.log(err)
     }
     else {
       if(data == null) {
-        res.json({"error": "user doesn't exists"})
+        res.json({"error": "User does not exist."})
       }
       else {
+        let description = req.body.description
+        let duration = req.body.duration
+        let date = req.body.date
+        if(description == '') {
+          description = 'It has some description'
+        }
+        if(duration == 0) {
+          duration = 60
+        }
+        if(date == null) {
+        
+        }
         Exercise.create({
           userId: userId,
           description: req.body.description,
-          duration: req.body.duration | 0,
-          date: req.body.date | Date.now()
+          duration: req.body.duration,
+          date: req.body.date
         }, (err, data) => {
           if(err) {
             console.log(err)
